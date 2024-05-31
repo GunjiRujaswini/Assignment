@@ -1,0 +1,154 @@
+---
+title: "5-24-24"
+output: word_document
+date: "2024-05-31"
+---
+
+---
+title: "Week Demo"
+author: "Rujaswini"
+date: "May 24, 2024"
+output: word
+---
+
+\`\`\`{r} library(ggplot2)
+
+# Read the data
+
+all \<- read.csv(file.choose()) \# NetflixDataset.csv head(all)
+
+# Plot High vs Low
+
+qplot(data=all, x=High, y=Low) \# kind of Obvious!!!
+
+# Convert to a matrix as clustering works better on a matrix
+
+mat \<- cbind(all$High, all$Low) head(mat)
+
+# Perform k-means clustering
+
+kmeans_result \<- kmeans(mat, centers=3)
+
+# Extract the cluster assignments
+
+km \<- kmeans_result\$cluster
+
+# Add cluster assignments to the data
+
+all\$cl \<- factor(km) head(all)
+
+# Summary of the data
+
+summary(all)
+
+# Plot High vs Low colored by clusters
+
+qplot(data=all, x=High, y=Low, color=cl)
+
+# Read the data again
+
+all \<- read.csv(file.choose()) \# open NetflixDataset.csv head(all)
+
+# Plot Low
+
+qplot(data=all, y=Low) \# All over the place!!
+
+# Perform k-means clustering on Low
+
+kmeans_result_Low \<- kmeans(all\$Low, centers=3)
+
+# Extract the cluster assignments for Low
+
+km_Low \<- kmeans_result_Low\$cluster
+
+# Add cluster assignments to the data
+
+all\$cl \<- factor(km_Low)
+
+# Plot Low colored by cluster
+
+qplot(data=all, y=Low, color=cl)
+
+# Plot Close
+
+qplot(data=all, y=Close) \# All over the place!!
+
+# Perform k-means clustering on Close
+
+kmeans_result_Close \<- kmeans(all\$Close, centers=3)
+
+# Extract the cluster assignments for Close
+
+km_Close \<- kmeans_result_Close\$cluster
+
+# Add cluster assignments to the data
+
+all\$cl \<- factor(km_Close)
+
+# Plot Close colored by quality
+
+qplot(data=all, y=Close, color=quality)
+
+# Plot Close colored by cluster
+
+qplot(data=all, y=Close, color=cl)
+
+# Read the data again
+
+all \<- read.csv(file.choose()) \# open NetflixDataset.csv head(all)
+
+# Plot High, Low, and Close
+
+qplot(data=all, y=High) qplot(data=all, y=Low) qplot(data=all, y=Close)
+
+# Convert to a matrix
+
+mat \<- cbind(all$High, all$Low, all\$Close) head(mat)
+
+# Perform k-means clustering
+
+kmeans_result_all \<- kmeans(mat, centers=3)
+
+# Extract the cluster assignments
+
+km_all \<- kmeans_result_all\$cluster
+
+# Add cluster assignments to the data
+
+all\$cl \<- factor(km_all)
+
+# Plot data colored by clusters
+
+qplot(data=all, y=High, color=cl) qplot(data=all, y=Low, color=cl) qplot(data=all, y=Close, color=cl) qplot(data=all, x=Close, y=High, color=cl) qplot(data=all, x=Close, y=Low, color=cl) qplot(data=all, x=Low, y=Close, color=cl)
+
+# Read different data
+
+all \<- read.csv(file.choose()) \# open grades_km_input.csv head(all)
+
+# Install and load plot3D library
+
+install.packages("plot3D") library("plot3D")
+
+# 3D scatter plot
+
+scatter3D(all$High, all$Low, all\$Close)
+
+# Convert to a matrix
+
+mat \<- cbind(all$High, all$Low, all\$Close) head(mat)
+
+# Perform k-means clustering
+
+kmeans_result_3D \<- kmeans(mat, centers=3)
+
+# Extract the cluster assignments
+
+km_3D \<- kmeans_result_3D\$cluster
+
+# Add cluster assignments to the data
+
+all\$cl \<- km_3D
+
+# 3D scatter plot colored by clusters
+
+scatter3D(all$High, all$Low, all$Close, colvar=all$cl)
